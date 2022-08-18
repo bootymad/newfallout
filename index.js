@@ -38,7 +38,6 @@ class Character {
 
 	editAp(amount) {
 		if (this.curAp + amount < 0) {
-			console.log("Not enough AP!");
 			return -1;
 		}
 		this.curAp += amount;
@@ -156,6 +155,9 @@ class Player extends Character {
 		if (this.equipped.weapon.isGun) {
 			if (this.editAp(AP_COSTS.reload) < 0) {
 				// not enough ap
+				messager.log(
+					"Not enough AP to reload! Need " + AP_COSTS.reload * -1
+				);
 				return -1;
 			}
 		} else {
@@ -165,22 +167,55 @@ class Player extends Character {
 		const { ammoType, magSize } = this.equipped.weapon;
 		const invAmmo = this.curInventory.ammo;
 		if (invAmmo[ammoType]) {
+			// enough ammo for a full clip
 			if (invAmmo[ammoType] >= magSize) {
 				invAmmo[ammoType] -= magSize;
 				this.equipped.weapon.reload(magSize);
+				messager.log(
+					this.name,
+					"reloads their",
+					this.equipped.weapon.name,
+					"..."
+				);
 				return 1;
 			}
+			// some ammo, not a full clip
 			if (invAmmo[ammoType] < magSize && invAmmo[ammoType] !== 0) {
 				this.equipped.weapon.reload(invAmmo[ammoType]);
 				invAmmo[ammoType] = 0;
 				return 1;
 			}
-			// no ammo
-			messager.log(`No ${ammoType} in inventory! You wasted your AP...`);
+			// not enough ammo
+			messager.log(
+				`Not enough ${ammoType} in inventory! You wasted your AP...`
+			);
 			return -1;
 		}
+		// no ammo of that type
 		messager.log(`No ${ammoType} in inventory! You wasted your AP...`);
 		return -1;
+	}
+}
+
+class PlayerUI {
+	constructor(playerObject) {
+		this.playerObject = playerObject;
+		this.pageBox = document.querySelector(".player-box");
+		const mappings = {
+			Status: () => this.playerObject.status(),
+			Attack: () =>
+				this.playerObject.attack(
+					this.playerObject.equipped.weapon.isGun
+				),
+			Reload: () => this.playerObject.reload(),
+			"End Turn": () => this.playerObject.endTurn(),
+		};
+		for (const [label, func] of Object.entries(mappings)) {
+			const btn = document.createElement("button");
+			btn.append(label);
+			btn.addEventListener("click", func);
+			this.pageBox.append(btn);
+		}
 	}
 }
 
