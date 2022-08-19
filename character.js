@@ -74,11 +74,13 @@ export class Character {
 
 	startTurn() {
 		this.isTurn = true;
+		messager.log(this.name, "turn started.");
 	}
 
 	endTurn() {
 		this.resetAp();
 		this.isTurn = false;
+		messager.log(this.name, "ended their turn.");
 	}
 
 	// combat methods
@@ -214,5 +216,9 @@ export class Player extends Character {
 		messager.log("Used a stimpak...");
 		messager.log("Healed", healed, "HP");
 		return 1;
+	}
+
+	inventory() {
+		// costs 2 ap in og fallout, free in this game
 	}
 }
