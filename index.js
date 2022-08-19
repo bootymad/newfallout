@@ -1,3 +1,10 @@
+// import { LABELS } from "./constants.js";
+
+const LABELS = {
+	STIMPAK: "stimpak",
+	AMMO10MM: "10mm",
+};
+
 const AP_COSTS = {
 	reload: -2,
 	inventory: -2,
@@ -29,7 +36,15 @@ class Character {
 	// stat methods
 
 	editHp(amount) {
+		// returns the amount that was healed
 		this.curHp += amount;
+		// went over max
+		if (this.curHp > this.maxHp) {
+			let overage = this.curHp - this.maxHp;
+			this.curHp = this.maxHp;
+			return amount - overage; // amount that was healed
+		}
+		return amount;
 	}
 
 	resetHp() {
@@ -148,6 +163,7 @@ class Player extends Character {
 		super(name, defSpecial);
 		this.defInventory = { ...defInventory };
 		this.curInventory = { ...this.defInventory };
+		this.healAmount = 12; // needs to be based on some skill
 	}
 
 	reload() {
@@ -195,6 +211,26 @@ class Player extends Character {
 		messager.log(`No ${ammoType} in inventory! You wasted your AP...`);
 		return -1;
 	}
+
+	heal() {
+		// inventory check
+		if (!this.curInventory.chems[LABELS.STIMPAK]) {
+			messager.log("No stimpaks in inventory!");
+			return -1;
+		}
+		// ap check
+		if (this.editAp(AP_COSTS.heal) < 0) {
+			messager.log(
+				"Not enough AP to use stimpak! Need " + AP_COSTS.heal * -1
+			);
+			return -1;
+		}
+		this.curInventory.chems[LABELS.STIMPAK] -= 1;
+		const healed = this.editHp(this.healAmount);
+		messager.log("Used a stimpak...");
+		messager.log("Healed", healed, "HP");
+		return 1;
+	}
 }
 
 class PlayerUI {
@@ -214,6 +250,7 @@ class PlayerUI {
 					this.playerObject.equipped.weapon.isGun
 				),
 			Reload: () => this.playerObject.reload(),
+			Heal: () => this.playerObject.heal(),
 			"End Turn": () => this.playerObject.endTurn(),
 		};
 		for (const [label, func] of Object.entries(buttonMappings)) {
@@ -326,9 +363,9 @@ const WEAPONS = {
 
 const defInventory = {
 	weapons: [WEAPONS.pistols["10mm Pistol"]],
-	ammo: { "10mm": 24 },
+	ammo: { [LABELS.AMMO10MM]: 24 },
 	armor: [],
-	chems: [],
+	chems: { [LABELS.STIMPAK]: 3 },
 };
 
 const testChar = new Player("TestGuy", defSpecial, defInventory);
