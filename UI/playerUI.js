@@ -15,25 +15,13 @@ export class PlayerUI {
 			".player-inventory_content"
 		);
 		this.inventoryBox.style.display = "none";
-		this.inventoryButton = document.querySelector("#close-all-btn-inv");
-		this.inventoryButton.addEventListener("click", () =>
+		this.inventoryButtonClose =
+			document.querySelector("#close-all-btn-inv");
+		this.inventoryButtonClose.addEventListener("click", () =>
 			this.showInventory()
 		);
 
-		for (const category of Object.keys(this.playerObject.curInventory)) {
-			const heading = document.createElement("h3");
-			heading.append(category);
-			this.inventoryBoxContent.append(heading);
-			this.inventoryBoxContent.append(heading);
-			for (const [name, quantity] of Object.entries(
-				this.playerObject.curInventory[category]
-			)) {
-				const entry = document.createElement("p");
-				entry.append(`${name}: x${quantity}`);
-				this.inventoryBoxContent.append(entry);
-			}
-		}
-
+		// draw buttons
 		const buttonMappings = {
 			Status: () => this.playerObject.status(),
 			"Inv.": () => this.showInventory(),
@@ -49,7 +37,8 @@ export class PlayerUI {
 			const btn = document.createElement("button");
 			btn.append(label);
 			btn.addEventListener("click", func);
-			btn.addEventListener("click", () => this.update());
+			label !== "Inv." &&
+				btn.addEventListener("click", () => this.update());
 			this.playerButtonBox.append(btn);
 		}
 
@@ -59,6 +48,13 @@ export class PlayerUI {
 			AP: `AP: ${this.playerObject.curAp} / ${this.playerObject.maxAp}`,
 		};
 		// this.playerStatsBox.append(statMappings.HP);
+
+		// current weapon
+		this.currentWeaponBox = document.createElement("div");
+		this.weaponImageBox = document.createElement("img");
+		this.weaponImageBox.src = this.playerObject.equipped.weapon.image;
+		this.currentWeaponBox.append(this.weaponImageBox);
+		this.pageBox.append(this.currentWeaponBox);
 	}
 
 	showInventory() {
@@ -88,6 +84,7 @@ export class PlayerUI {
 	}
 
 	update() {
+		console.log("update called");
 		this.playerStatsBox.textContent = "";
 		this.statMappings = {
 			HP: `HP: ${this.playerObject.curHp} / ${this.playerObject.maxHp}`,

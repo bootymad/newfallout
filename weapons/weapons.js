@@ -1,11 +1,12 @@
 export class Weapon {
-	constructor(name, dmgLow, dmgHigh, strReq, apCost) {
+	constructor(name, dmgLow, dmgHigh, strReq, apCost, image) {
 		this.name = name;
 		this.dmgLow = dmgLow;
 		this.dmgHigh = dmgHigh;
 		this.strReq = strReq;
 		this.apCost = apCost;
 		this.isGun = false;
+		this.image = image;
 	}
 }
 
@@ -16,12 +17,13 @@ export class Gun extends Weapon {
 		dmgHigh,
 		strReq,
 		apCost,
+		image,
 		ammoType,
 		magSize,
 		canBurst,
 		burstAmmoUse = 0
 	) {
-		super(name, dmgLow, dmgHigh, strReq, apCost);
+		super(name, dmgLow, dmgHigh, strReq, apCost, image);
 		this.ammoType = ammoType;
 		this.magSize = magSize;
 		this.curClip = this.magSize;
