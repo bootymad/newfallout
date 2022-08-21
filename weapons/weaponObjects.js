@@ -9,6 +9,11 @@ export const WEAPONS = {
 			3,
 			5,
 			"./images/weapons/PISTOL_10MM.webp",
+			{
+				fire: "./sounds/weapons/10mmpistol/SINGLESHOT.ogg",
+				reload: "./sounds/weapons/10mmpistol/RELOAD.ogg",
+				empty: "./sounds/weapons/10mmpistol/EMPTY.ogg",
+			},
 			"10mm",
 			12,
 			false
@@ -19,7 +24,12 @@ export const WEAPONS = {
 			30,
 			5,
 			5,
-			"./images/weapons/PISTOL_10MM.webp",
+			"./images/weapons/PISTOL_223.webp",
+			{
+				fire: "./sounds/weapons/223pistol/SINGLESHOT.ogg",
+				reload: "./sounds/weapons/223pistol/RELOAD.ogg",
+				empty: "./sounds/weapons/223pistol/EMPTY.ogg",
+			},
 			".223 FMJ",
 			5,
 			false

@@ -130,6 +130,7 @@ export class Character {
 			return this.equipped.weapon.fireSingle() * this.dmgCalc();
 		}
 		// no bullets in clip
+		this.equipped.weapon.fireNoAmmo();
 		messager.log("Out of ammo! Did not fire.");
 		return -1;
 	}

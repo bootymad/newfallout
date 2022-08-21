@@ -52,8 +52,10 @@ export class PlayerUI {
 		// current weapon
 		this.currentWeaponBox = document.createElement("div");
 		this.weaponImageBox = document.createElement("img");
+		this.weaponStatusBox = document.createElement("div");
 		this.weaponImageBox.src = this.playerObject.equipped.weapon.image;
 		this.currentWeaponBox.append(this.weaponImageBox);
+		this.currentWeaponBox.append(this.weaponStatusBox);
 		this.pageBox.append(this.currentWeaponBox);
 	}
 
@@ -95,5 +97,19 @@ export class PlayerUI {
 		const ap = document.createElement("p");
 		ap.append(this.statMappings.AP);
 		this.playerStatsBox.append(hp, ap);
+		// weapon
+		this.weaponImageBox.src = this.playerObject.equipped.weapon.image;
+		this.weaponStatusBox.textContent = "";
+		const { name, isGun, curClip, magSize, ammoType } =
+			this.playerObject.equipped.weapon;
+		const wepName = document.createElement("p");
+		wepName.append(name);
+		if (isGun) {
+			const wepAmmo = document.createElement("p");
+			wepAmmo.append(`${curClip} / ${magSize} ${ammoType}`);
+			this.weaponStatusBox.append(wepName, wepAmmo);
+		} else {
+			this.weaponStatusBox.append(wepName);
+		}
 	}
 }
