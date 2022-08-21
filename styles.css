@@ -35,6 +35,34 @@ body {
 	width: 100%;
 }
 
+.menu-screen {
+	color: #8b772a;
+	text-shadow: 3px 3px 8px #e4da8950;
+	font-size: 3rem;
+	max-width: 640px;
+	width: 100%;
+	height: 480px;
+	background-image: url("./images/pipboy.webp");
+	position: relative;
+}
+
+.menu-screen ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	position: absolute;
+	left: 350px;
+	top: 180px;
+}
+
+.menu-screen li {
+	cursor: pointer;
+}
+
+.menu-screen li:hover {
+	opacity: 0.6;
+}
+
 .character-boxes {
 	display: flex;
 	justify-content: space-between;

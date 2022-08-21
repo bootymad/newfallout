@@ -29,12 +29,14 @@ const defInventory = {
 
 const testChar = new Player("TestGuy", defSpecial, defInventory);
 testChar.equipped.weapon = WEAPONS.pistols[LABELS.GUN10MM];
-let b = document.createElement("button");
-b.append("Change Weapon");
-b.addEventListener(
-	"click",
-	() => (testChar.equipped.weapon = WEAPONS.pistols[LABELS.GUN223])
-);
-document.body.append(b);
+
 const playerUI = new PlayerUI(testChar);
 playerUI.update();
+
+// let b = document.createElement("button");
+// b.append("Change Weapon");
+// b.addEventListener(
+// 	"click",
+// 	() => (testChar.equipped.weapon = WEAPONS.pistols[LABELS.GUN223])
+// );
+// document.body.append(b);
