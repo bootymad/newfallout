@@ -4,6 +4,17 @@ export class Game {
 		this.mainScreen.style.display = "none";
 
 		this.menuScreen = document.querySelector(".menu-screen");
+		// main menu buttons
+		document.querySelector("#new-game").addEventListener("click", () => {
+			this.toggleMenuScreen();
+			this.characterCreationScreen();
+		});
+		document
+			.querySelector("#continue-game")
+			.addEventListener("click", () => {
+				this.toggleMenuScreen();
+				this.toggleMainScreen();
+			});
 
 		this.characterCreationScreen = document.querySelector(
 			".character-creation"

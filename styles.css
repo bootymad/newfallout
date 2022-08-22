@@ -44,6 +44,7 @@ body {
 	height: 480px;
 	background-image: url("./images/pipboy.webp");
 	position: relative;
+	border-radius: 5px;
 }
 
 .menu-screen ul {
