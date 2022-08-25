@@ -90,6 +90,23 @@ body {
 	justify-content: space-between;
 }
 
+/* CHARACTER CREATION */
+
+.character-creation__item {
+	color: white;
+	font-size: 2rem;
+	display: flex;
+	gap: 1rem;
+	justify-content: space-between;
+	align-items: center;
+	margin-top: 1rem;
+}
+
+.character-creation__item button {
+	font-size: 2rem;
+	padding: 1rem;
+}
+
 .all-messages {
 	max-width: 20rem;
 	width: 100%;

@@ -1,3 +1,4 @@
+import { CharacterCreation } from "./characterCreation.js";
 export class Game {
 	constructor() {
 		this.mainScreen = document.querySelector(".main");
@@ -7,7 +8,7 @@ export class Game {
 		// main menu buttons
 		document.querySelector("#new-game").addEventListener("click", () => {
 			this.toggleMenuScreen();
-			this.characterCreationScreen();
+			this.toggleCharacterCreationScreen();
 		});
 		document
 			.querySelector("#continue-game")
@@ -16,9 +17,9 @@ export class Game {
 				this.toggleMainScreen();
 			});
 
-		this.characterCreationScreen = document.querySelector(
-			".character-creation"
-		);
+		// this.characterCreationScreen = document.querySelector(
+		// 	".character-creation"
+		// );
 	}
 
 	toggleMainScreen() {
@@ -34,8 +35,12 @@ export class Game {
 	}
 
 	toggleCharacterCreationScreen() {
-		this.characterCreationScreen.style.display === "none"
-			? (this.characterCreationScreen.style.display = "initial")
-			: (this.characterCreationScreen.style.display = "none");
+		// if (this.characterCreationScreen.style.display === "none") {
+		// 	this.characterCreationScreen.style.display = "initial";
+		// 	const cc = new CharacterCreation();
+		// } else {
+		// 	this.characterCreationScreen.style.display = "none";
+		// }
+		const cc = new CharacterCreation();
 	}
 }
