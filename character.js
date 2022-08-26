@@ -1,11 +1,9 @@
 import { LABELS, AP_COSTS } from "./constants.js";
-import { MessageLogger } from "./messageLogger.js";
-
-const messager = new MessageLogger();
 
 export class Character {
 	// def = default or starting values, cur = current values (power ups, bonuses, etc.)
-	constructor(name, defSpecial) {
+	constructor(name, defSpecial, logger) {
+		this.messager = logger;
 		this.name = name;
 
 		this.defSpecial = { ...defSpecial };
@@ -68,19 +66,19 @@ export class Character {
 	}
 
 	status() {
-		messager.log("HP", this.curHp, "/", this.maxHp);
-		messager.log("AP", this.curAp, "/", this.maxAp);
+		this.messager.log("HP", this.curHp, "/", this.maxHp);
+		this.messager.log("AP", this.curAp, "/", this.maxAp);
 	}
 
 	startTurn() {
 		this.isTurn = true;
-		messager.log(this.name, "turn started.");
+		this.messager.log(this.name, "turn started.");
 	}
 
 	endTurn() {
 		this.resetAp();
 		this.isTurn = false;
-		messager.log(this.name, "ended their turn.");
+		this.messager.log(this.name, "ended their turn.");
 	}
 
 	// combat methods
@@ -97,7 +95,7 @@ export class Character {
 			if (this.equipped.weapon.apCostBurst <= this.curAp) {
 				this.curAp -= this.equipped.weapon.apCostBurst;
 			} else {
-				messager.log(
+				this.messager.log(
 					"Not enough AP! Need " + this.equipped.weapon.apCostBurst
 				);
 				return -1;
@@ -106,7 +104,7 @@ export class Character {
 			if (this.equipped.weapon.apCost <= this.curAp) {
 				this.curAp -= this.equipped.weapon.apCost;
 			} else {
-				messager.log(
+				this.messager.log(
 					"Not enough AP! Need " + this.equipped.weapon.apCost
 				);
 				return -1;
@@ -131,7 +129,7 @@ export class Character {
 		}
 		// no bullets in clip
 		this.equipped.weapon.fireNoAmmo();
-		messager.log("Out of ammo! Did not fire.");
+		this.messager.log("Out of ammo! Did not fire.");
 		return -1;
 	}
 
@@ -146,8 +144,8 @@ export class Character {
 // ==================PLAYER================== //
 
 export class Player extends Character {
-	constructor(name, defSpecial, defInventory) {
-		super(name, defSpecial);
+	constructor(name, defSpecial, defInventory, logger) {
+		super(name, defSpecial, logger);
 		this.defInventory = { ...defInventory };
 		this.curInventory = { ...this.defInventory };
 		this.healAmount = 12; // needs to be based on some skill
@@ -158,7 +156,7 @@ export class Player extends Character {
 		if (this.equipped.weapon.isGun) {
 			if (this.editAp(AP_COSTS.reload) < 0) {
 				// not enough ap
-				messager.log(
+				this.messager.log(
 					"Not enough AP to reload! Need " + AP_COSTS.reload * -1
 				);
 				return -1;
@@ -174,7 +172,7 @@ export class Player extends Character {
 			if (invAmmo[ammoType] >= magSize) {
 				invAmmo[ammoType] -= magSize;
 				this.equipped.weapon.reload(magSize);
-				messager.log(
+				this.messager.log(
 					this.name,
 					"reloads their",
 					this.equipped.weapon.name,
@@ -189,33 +187,33 @@ export class Player extends Character {
 				return 1;
 			}
 			// not enough ammo
-			messager.log(
+			this.messager.log(
 				`Not enough ${ammoType} in inventory! You wasted your AP...`
 			);
 			return -1;
 		}
 		// no ammo of that type
-		messager.log(`No ${ammoType} in inventory! You wasted your AP...`);
+		this.messager.log(`No ${ammoType} in inventory! You wasted your AP...`);
 		return -1;
 	}
 
 	heal() {
 		// inventory check
 		if (!this.curInventory.chems[LABELS.STIMPAK]) {
-			messager.log("No stimpaks in inventory!");
+			this.messager.log("No stimpaks in inventory!");
 			return -1;
 		}
 		// ap check
 		if (this.editAp(AP_COSTS.heal) < 0) {
-			messager.log(
+			this.messager.log(
 				"Not enough AP to use stimpak! Need " + AP_COSTS.heal * -1
 			);
 			return -1;
 		}
 		this.curInventory.chems[LABELS.STIMPAK] -= 1;
 		const healed = this.editHp(this.healAmount);
-		messager.log("Used a stimpak...");
-		messager.log("Healed", healed, "HP");
+		this.messager.log("Used a stimpak...");
+		this.messager.log("Healed", healed, "HP");
 		return 1;
 	}
 

@@ -42,6 +42,7 @@ export class MessageLogger {
 		this.pageElement.append(msg.cloneNode(true)); // can't append same element twice
 	}
 
+	// not used
 	render() {
 		// clear exisiting messages from page
 		this.pageElement.textContent = "";

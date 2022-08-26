@@ -1,6 +1,7 @@
 import { CharacterCreation } from "./characterCreation.js";
 export class Game {
-	constructor() {
+	constructor(logger) {
+		this.logger = logger;
 		this.mainScreen = document.querySelector(".main");
 		this.mainScreen.style.display = "none";
 
@@ -41,6 +42,6 @@ export class Game {
 		// } else {
 		// 	this.characterCreationScreen.style.display = "none";
 		// }
-		const cc = new CharacterCreation();
+		const cc = new CharacterCreation(this.logger);
 	}
 }
