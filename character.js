@@ -113,7 +113,16 @@ export class Character {
 
 		// melee weapon
 		if (!isGun) {
-			return this.dmgCalc();
+			const dmg = this.dmgCalc();
+			this.messager.log(
+				this.name,
+				"attacked with",
+				this.equipped.weapon.name,
+				"for",
+				dmg,
+				"damage!"
+			);
+			return dmg;
 		}
 		if (this.equipped.weapon.curClip > 0) {
 			// burst firing
@@ -122,10 +131,27 @@ export class Character {
 				for (let i = 0; i < this.equipped.weapon.fireBurst(); i++) {
 					totalDamage += this.dmgCalc();
 				}
+				this.messager.log(
+					this.name,
+					"burst fired with",
+					this.equipped.weapon.name,
+					"for",
+					totalDamage,
+					"damage!"
+				);
 				return totalDamage;
 			}
 			// single firing
-			return this.equipped.weapon.fireSingle() * this.dmgCalc();
+			const dmg = this.equipped.weapon.fireSingle() * this.dmgCalc();
+			this.messager.log(
+				this.name,
+				"fired with",
+				this.equipped.weapon.name,
+				"for",
+				dmg,
+				"damage!"
+			);
+			return dmg;
 		}
 		// no bullets in clip
 		this.equipped.weapon.fireNoAmmo();

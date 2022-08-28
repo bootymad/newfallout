@@ -14,6 +14,8 @@ export class CharacterCreation {
 	constructor(logger) {
 		this.logger = logger;
 
+		// change background of wrapper
+		this.toggleBackground(true);
 		this.defSpecial = {
 			strength: 5,
 			perception: 5,
@@ -86,6 +88,7 @@ export class CharacterCreation {
 		this.confirmButton.append("Create Character");
 		this.confirmButton.addEventListener("click", () => {
 			this.pageElement.style.display = "none";
+			this.toggleBackground(false);
 			const mainScreen = document.querySelector(".main");
 			mainScreen.style.display = "initial";
 			const player = new Player(
@@ -118,5 +121,17 @@ export class CharacterCreation {
 		this.pointsLeft === 0
 			? (this.confirmButton.disabled = false)
 			: (this.confirmButton.disabled = true);
+	}
+
+	toggleBackground(status) {
+		this.pageWrapper = document.querySelector(".wrapper");
+		if (status) {
+			this.pageWrapper.style.backgroundImage =
+				"url(./images/terminalscreen.jpg)";
+			this.pageWrapper.style.backgroundSize = "cover";
+			this.pageWrapper.style.backgroundPosition = "center";
+		} else {
+			this.pageWrapper.style.backgroundImage = "none";
+		}
 	}
 }
