@@ -9,6 +9,13 @@ export class PlayerUI {
 		this.pageBox.append(this.playerButtonBox);
 		this.pageBox.append(this.playerStatsBox);
 
+		const testLvlButton = document.createElement("button");
+		testLvlButton.append("Level Up");
+		testLvlButton.addEventListener("click", () =>
+			this.playerObject.levelUp()
+		);
+		document.body.append(testLvlButton);
+
 		// inventory
 		this.inventoryBox = document.querySelector(".player-inventory");
 		this.inventoryBoxContent = document.querySelector(
@@ -21,9 +28,19 @@ export class PlayerUI {
 			this.showInventory()
 		);
 
+		// player status
+		this.statusBoxClicked = false;
+		this.statusBox = document.querySelector(".player-status");
+		this.statusBox.style.display = "none";
+		this.statusBoxContent = document.querySelector(
+			".player-status_content"
+		);
+		this.statusBoxButton = document.querySelector("#close-all-btn-status");
+		this.statusBoxButton.addEventListener("click", () => this.showStatus());
+
 		// draw buttons
 		const buttonMappings = {
-			Status: () => this.playerObject.status(),
+			Status: () => this.showStatus(),
 			"Inv.": () => this.showInventory(),
 			Attack: () =>
 				this.playerObject.attack(
@@ -82,6 +99,21 @@ export class PlayerUI {
 			this.inventoryBox.style.display = "none";
 			// empty content
 			this.inventoryBoxContent.textContent = "";
+		}
+	}
+
+	showStatus() {
+		if (this.statusBoxClicked) {
+			this.statusBox.style.display = "none";
+			this.statusBoxContent.textContent = "";
+			this.statusBoxClicked = false;
+		} else {
+			this.statusBoxClicked = true;
+			// draw all latest values
+			// name, lvl, xp
+			const { name, lvl, xp, xpNeeded } = this.playerObject;
+			this.statusBoxContent.innerHTML = `<p>${name.toUpperCase()}</p><p>LVL: ${lvl}</p><p>XP: ${xp}/${xpNeeded}</p>`;
+			this.statusBox.style.display = "flex";
 		}
 	}
 

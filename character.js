@@ -175,6 +175,15 @@ export class Player extends Character {
 		this.defInventory = { ...defInventory };
 		this.curInventory = { ...this.defInventory };
 		this.healAmount = 12; // needs to be based on some skill
+
+		// leveling
+		this.lvl = 1;
+		this.xp = 0;
+		this.xpNeeded = ((this.lvl * (this.lvl - 1)) / 2) * 1000;
+
+		//level up sound
+		this.levelUpSound = new Audio("./sounds/env/ui_levelup.wav");
+		this.levelUpSound.volume = 0.5;
 	}
 
 	reload() {
@@ -245,5 +254,16 @@ export class Player extends Character {
 
 	inventory() {
 		// costs 2 ap in og fallout, free in this game
+	}
+
+	levelUp() {
+		this.levelUpSound.play();
+		this.lvl++;
+		this.xpNeeded = ((this.lvl * (this.lvl - 1)) / 2) * 1000;
+		// max hp increase
+		this.maxHp += Math.floor(this.curSpecial.endurance / 2 + 2);
+		// fully heal
+		this.curHp = this.maxHp;
+		this.messager.log("Level Up! You are now level", this.lvl);
 	}
 }

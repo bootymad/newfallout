@@ -9,16 +9,27 @@ export class Game {
 
 		// game wide sounds
 		this.uiSounds = {
+			pipboy: {
+				ambience: new Audio("./sounds/env/pipboy/ambience.wav"),
+			},
 			negative: new Audio("./sounds/env/negative.wav"),
 		};
+
+		this.uiSounds.pipboy.ambience.volume = 0.2;
+		this.uiSounds.pipboy.ambience.loop = true;
+		this.uiSounds.pipboy.ambience.play();
 		// main menu buttons
 		document.querySelector("#new-game").addEventListener("click", () => {
+			this.uiSounds.pipboy.ambience.loop = false;
+			this.uiSounds.pipboy.ambience.pause();
 			this.toggleMenuScreen();
 			this.toggleCharacterCreationScreen();
 		});
 		document
 			.querySelector("#continue-game")
 			.addEventListener("click", () => {
+				this.uiSounds.pipboy.ambience.loop = false;
+				this.uiSounds.pipboy.ambience.pause();
 				this.toggleMenuScreen();
 				this.toggleMainScreen();
 			});

@@ -12,6 +12,8 @@ const defInventory = {
 
 export class CharacterCreation {
 	constructor(logger, uiSounds) {
+		// hide the fallout js logo
+		document.querySelector("#logo").style.display = "none";
 		this.logger = logger;
 		this.uiSounds = uiSounds;
 
@@ -20,6 +22,8 @@ export class CharacterCreation {
 		this.backgroundNoise.loop = true;
 		this.backgroundNoise.volume = 0.2;
 		this.backgroundNoise.play();
+
+		this.terminalClose = new Audio("./sounds/env/terminalclose.wav");
 
 		// hover sounds
 		this.hoverSound = new Audio("./sounds/env/terminalhover.wav");
@@ -120,12 +124,16 @@ export class CharacterCreation {
 		});
 		this.pageElement.append(this.statsUi);
 
+		// CONFIRM - START GAME LOGIC
 		this.confirmButton = document.createElement("button");
 		this.confirmButton.append("Create Character");
 		this.confirmButton.addEventListener("click", () => {
+			this.terminalClose.play();
 			this.backgroundNoise.pause();
 			this.pageElement.style.display = "none";
 			this.toggleBackground(false);
+
+			document.querySelector("#logo").style.display = "initial";
 			const mainScreen = document.querySelector(".main");
 			mainScreen.style.display = "initial";
 			const player = new Player(
@@ -142,6 +150,7 @@ export class CharacterCreation {
 		});
 		this.confirmButton.disabled = true;
 		this.statsUi.append(this.confirmButton);
+		// ============================================= //
 	}
 
 	update() {
