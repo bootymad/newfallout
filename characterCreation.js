@@ -11,8 +11,31 @@ const defInventory = {
 };
 
 export class CharacterCreation {
-	constructor(logger) {
+	constructor(logger, uiSounds) {
 		this.logger = logger;
+		this.uiSounds = uiSounds;
+
+		// terminal sound
+		this.backgroundNoise = new Audio("./sounds/env/terminal.wav");
+		this.backgroundNoise.loop = true;
+		this.backgroundNoise.volume = 0.2;
+		this.backgroundNoise.play();
+
+		// hover sounds
+		this.hoverSound = new Audio("./sounds/env/terminalhover.wav");
+		this.hoverSound.volume = 0.6;
+
+		// load clicking sounds
+		this.clickSoundsCount = 6;
+		this.clickSounds = [];
+		for (let i = 1; i <= this.clickSoundsCount; i++) {
+			let click = new Audio(
+				`./sounds/env/clicks/ui_hacking_charsingle_0${i}.wav`
+			);
+			click.volume = 0.6;
+			this.clickSounds.push(click);
+		}
+		console.log(this.clickSounds.length);
 
 		// change background of wrapper
 		this.toggleBackground(true);
@@ -38,11 +61,10 @@ export class CharacterCreation {
 		this.pointsLeft = 5;
 
 		this.pageElement = document.querySelector(".character-creation");
-		this.pageElement.style.display = "initial";
 		// create ui
-		const heading = document.createElement("h2");
-		heading.append("Character Creator");
-		this.pageElement.append(heading);
+		this.specialElement = document.createElement("div");
+		this.specialElement.className = "character-creation__special";
+		this.pageElement.append(this.specialElement);
 
 		this.statsUi = document.createElement("div");
 		this.statsUi.className = "character-creation__stats";
@@ -60,33 +82,48 @@ export class CharacterCreation {
 			item.className = "character-creation__item";
 			const subtract = document.createElement("button");
 			subtract.append("<<");
+			// hover sound
+			subtract.addEventListener("mouseover", () => {
+				this.hoverSound.play();
+			});
 			subtract.addEventListener("click", () => {
 				if (this.curSpecial[key] > 1) {
+					// play random click
+					this.playRandomClick();
 					this.curSpecial[key]--;
 					this.pointsLeft++;
 					this.update();
+				} else {
+					this.uiSounds.negative.play();
 				}
-				return;
 			});
 
 			const add = document.createElement("button");
 			add.append(">>");
+			// hover sound
+			add.addEventListener("mouseover", () => {
+				this.hoverSound.play();
+			});
 			add.addEventListener("click", () => {
 				if (this.curSpecial[key] === 10 || this.pointsLeft === 0) {
-					return;
+					this.uiSounds.negative.play();
+				} else {
+					// play random click
+					this.playRandomClick();
+					this.curSpecial[key]++;
+					this.pointsLeft--;
+					this.update();
 				}
-				this.curSpecial[key]++;
-				this.pointsLeft--;
-				this.update();
 			});
 			item.append(subtract, key, add);
-			this.pageElement.append(item);
+			this.specialElement.append(item);
 		});
 		this.pageElement.append(this.statsUi);
 
 		this.confirmButton = document.createElement("button");
 		this.confirmButton.append("Create Character");
 		this.confirmButton.addEventListener("click", () => {
+			this.backgroundNoise.pause();
 			this.pageElement.style.display = "none";
 			this.toggleBackground(false);
 			const mainScreen = document.querySelector(".main");
@@ -104,7 +141,7 @@ export class CharacterCreation {
 			this.pageElement.remove();
 		});
 		this.confirmButton.disabled = true;
-		this.pageElement.append(this.confirmButton);
+		this.statsUi.append(this.confirmButton);
 	}
 
 	update() {
@@ -112,7 +149,7 @@ export class CharacterCreation {
 		const statList = document.createElement("ul");
 		const pointsLeft = document.createElement("p");
 		pointsLeft.append(`Points Left: ${this.pointsLeft}`);
-		this.statsUi.append(statList, pointsLeft);
+		this.statsUi.append(statList, pointsLeft, this.confirmButton);
 		Object.keys(this.defSpecial).forEach((key) => {
 			const display = document.createElement("li");
 			display.append(`${key}: ${this.curSpecial[key]}`);
@@ -133,5 +170,10 @@ export class CharacterCreation {
 		} else {
 			this.pageWrapper.style.backgroundImage = "none";
 		}
+	}
+
+	playRandomClick() {
+		let num = Math.floor(Math.random() * this.clickSoundsCount);
+		this.clickSounds[num].play();
 	}
 }

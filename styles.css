@@ -7,8 +7,8 @@
 	box-sizing: border-box;
 	padding: 0;
 	margin: 0;
-	font-family: "Overseer";
 }
+
 body {
 	background-color: black;
 }
@@ -22,6 +22,7 @@ body {
 }
 
 #logo {
+	font-family: "Overseer";
 	color: ghostwhite;
 	font-size: 2rem;
 	position: absolute;
@@ -92,9 +93,17 @@ body {
 
 /* CHARACTER CREATION */
 
+.character-creation {
+	font-family: monospace;
+	font-weight: 700;
+	color: #4cb974;
+	text-shadow: 1px 1px 5px #54ba7850;
+	font-size: 1.5rem;
+	display: flex;
+	gap: 1rem;
+}
+
 .character-creation__item {
-	color: ghostwhite;
-	font-size: 2rem;
 	display: flex;
 	gap: 1rem;
 	justify-content: space-between;
@@ -103,21 +112,41 @@ body {
 }
 
 .character-creation__item button {
-	font-size: 2rem;
+	color: #4cb974;
 	padding: 1rem;
+	background: none;
+	border: 2px solid #4cb974;
 }
 
 .character-creation__stats {
-	color: ghostwhite;
 	margin-top: 1rem;
-	display: flex;
-	justify-content: space-between;
 }
 
 .character-creation__stats ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
+}
+
+.character-creation__stats p {
+	border-top: 2px solid #4cb974;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
+}
+
+.character-creation__stats button {
+	font-family: monospace;
+	font-weight: 700;
+	font-size: 1rem;
+	width: 100%;
+	color: #4cb974;
+	padding: 1rem;
+	background: none;
+	border: 2px solid #4cb974;
+}
+
+.character-creation__stats button:disabled {
+	opacity: 0.5;
 }
 
 .all-messages {

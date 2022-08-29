@@ -6,6 +6,11 @@ export class Game {
 		this.mainScreen.style.display = "none";
 
 		this.menuScreen = document.querySelector(".menu-screen");
+
+		// game wide sounds
+		this.uiSounds = {
+			negative: new Audio("./sounds/env/negative.wav"),
+		};
 		// main menu buttons
 		document.querySelector("#new-game").addEventListener("click", () => {
 			this.toggleMenuScreen();
@@ -42,6 +47,6 @@ export class Game {
 		// } else {
 		// 	this.characterCreationScreen.style.display = "none";
 		// }
-		const cc = new CharacterCreation(this.logger);
+		const cc = new CharacterCreation(this.logger, this.uiSounds);
 	}
 }
