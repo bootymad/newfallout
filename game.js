@@ -15,9 +15,9 @@ export class Game {
 			negative: new Audio("./sounds/env/negative.wav"),
 		};
 
-		this.uiSounds.pipboy.ambience.volume = 0.2;
-		this.uiSounds.pipboy.ambience.loop = true;
-		this.uiSounds.pipboy.ambience.play();
+		// this.uiSounds.pipboy.ambience.volume = 0.2;
+		// this.uiSounds.pipboy.ambience.loop = true;
+		// this.uiSounds.pipboy.ambience.play();
 		// main menu buttons
 		document.querySelector("#new-game").addEventListener("click", () => {
 			this.uiSounds.pipboy.ambience.loop = false;
@@ -33,10 +33,6 @@ export class Game {
 				this.toggleMenuScreen();
 				this.toggleMainScreen();
 			});
-
-		// this.characterCreationScreen = document.querySelector(
-		// 	".character-creation"
-		// );
 	}
 
 	toggleMainScreen() {
@@ -52,12 +48,6 @@ export class Game {
 	}
 
 	toggleCharacterCreationScreen() {
-		// if (this.characterCreationScreen.style.display === "none") {
-		// 	this.characterCreationScreen.style.display = "initial";
-		// 	const cc = new CharacterCreation();
-		// } else {
-		// 	this.characterCreationScreen.style.display = "none";
-		// }
 		const cc = new CharacterCreation(this.logger, this.uiSounds);
 	}
 }

@@ -1,5 +1,6 @@
 import { Player } from "./character.js";
 import { PlayerUI } from "./UI/playerUI.js";
+import { EnemyUI } from "./UI/enemyUI.js";
 import { LABELS, AP_COSTS } from "./constants.js";
 import { WEAPONS } from "./weapons/weaponObjects.js";
 
@@ -144,6 +145,7 @@ export class CharacterCreation {
 			);
 			player.equipped.weapon = WEAPONS.pistols[LABELS.GUN10MM];
 			const playerUI = new PlayerUI(player);
+			const enemyUI = new EnemyUI(this.logger);
 			playerUI.update();
 			// remove character creation
 			this.pageElement.remove();
